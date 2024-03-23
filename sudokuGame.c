@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+
+
+//Creating board Struct with all the array names and sizes
 struct board{
     int x1[9];
     int x2[9];
@@ -20,7 +23,14 @@ typedef struct board Board;
 struct board easyBoard(){
 
     struct board easyBoardStruct = {{3,5,0,4,0,0,8,0,0}, 
-                                    {0,7,6,8,1,0,0,0,0}, {0,0,0,0,6,0,0,0,2}, {0,0,0,0,4,6,3,0}, {0,0,3,5,0,0,0,0,0}, {6,1,0,0,0,0,0,2,4}, {5,9,1,8,4,7,6,0}, {0,0,0,0,5,7,0,0,1}, {0,6,4,0,9,3,2,8,5}};
+                                    {0,7,6,8,1,0,0,0,0}, 
+                                    {0,0,0,0,6,0,0,0,2}, 
+                                    {0,0,0,0,4,6,3,0}, 
+                                    {0,0,3,5,0,0,0,0,0}, 
+                                    {6,1,0,0,0,0,0,2,4}, 
+                                    {5,9,1,8,4,7,6,0}, 
+                                    {0,0,0,0,5,7,0,0,1}, 
+                                    {0,6,4,0,9,3,2,8,5}};
 
     return easyBoardStruct;
 }
@@ -64,7 +74,14 @@ int timeLimit(void){
     return 0;
 }
 
+int writeToFile(input){
+    FILE *file;
+    file = fopen("savegame.txt", "a");
+    fprintf(file, "%d", input);
+    fclose(file);
 
+    return 0;
+}
 int displayBoard(Board displayCurrentBoard){
     // char currentX[] = "xX";
     // for(int value = 0; value < 9; value++){
@@ -179,6 +196,7 @@ int menu(void){
     int choice;
     printf("\n1) Input Value\n2) Undo\n3) Redo\n4) Delete\n5) Quit ");
     scanf("%d", &choice);
+    writeToFile(choice);
     while(choice < 1 || choice > 5 ){
         printf("Invalid: Enter another value ");
         scanf("%d", &choice);   
@@ -204,12 +222,18 @@ int menu(void){
 
 
 int main(void){
+    //Created file pointer and started a new savegame.txt file
+    FILE *file;
+    file = fopen("savegame.txt", "w");
+    //Created board struct to chose level;
     struct board selectedBoard;
+
+
     printf("hello\n");
     int functionCall;
     printf("Enter your choice");
     scanf("%d", &functionCall);
-
+    writeToFile(functionCall);
     printf("You entered %d \n", functionCall);
 
     if(functionCall == 1){
