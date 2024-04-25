@@ -423,15 +423,33 @@ void displayBoard(struct board displayCurrentBoard) {
             int value;
             //Switch cases to get each row using i as the y value and j as the column value
             switch (i) {
-                case 0: value = displayCurrentBoard.y1[j]; break;
-                case 1: value = displayCurrentBoard.y2[j]; break;
-                case 2: value = displayCurrentBoard.y3[j]; break;
-                case 3: value = displayCurrentBoard.y4[j]; break;
-                case 4: value = displayCurrentBoard.y5[j]; break;
-                case 5: value = displayCurrentBoard.y6[j]; break;
-                case 6: value = displayCurrentBoard.y7[j]; break;
-                case 7: value = displayCurrentBoard.y8[j]; break;
-                case 8: value = displayCurrentBoard.y9[j]; break;
+                case 0: 
+                    value = displayCurrentBoard.y1[j]; 
+                    break;
+                case 1: 
+                    value = displayCurrentBoard.y2[j]; 
+                    break;
+                case 2: 
+                    value = displayCurrentBoard.y3[j]; 
+                    break;
+                case 3: 
+                    value = displayCurrentBoard.y4[j]; 
+                    break;
+                case 4:     
+                    value = displayCurrentBoard.y5[j]; 
+                    break;
+                case 5: 
+                    value = displayCurrentBoard.y6[j]; 
+                    break;
+                case 6: 
+                    value = displayCurrentBoard.y7[j]; 
+                    break;
+                case 7: 
+                    value = displayCurrentBoard.y8[j]; 
+                    break;
+                case 8: 
+                    value = displayCurrentBoard.y9[j]; 
+                    break;
             }
             if (value == 0) {
                 //Prints space if the value of the index is 0
@@ -482,6 +500,7 @@ void menu(struct board currentBoard){
             break;
         case 3:
             redo(&currentBoard);
+            menu(currentBoard);
             break;
         case 4:
             currentBoard = delete(currentBoard);
