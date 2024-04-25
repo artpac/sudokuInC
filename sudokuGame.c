@@ -563,7 +563,7 @@ int main(){
     //Start of the game
     printf("\n\nWelcome to my sudoku game\n\n");
 
-    printf("Select an option - \n1) Start new game \n2) View pervious game \n3) Quit\n");
+    printf("Select an option - \n1) Start new game \n2) View previous game \n3) Quit\n");
     scanf("%d", &startChoice);
     char readValue;
     //Switch case for user choice
@@ -574,7 +574,7 @@ int main(){
             file = fopen("savegame.txt", "w");
 
             //Gets user board difficulty
-            printf("Pick a difficulty - \n1) Easy \n2) Meduim \n3) Hard \n4) Empty Board\n");
+            printf("Pick a difficulty - \n1) Easy \n2) Medium \n3) Hard \n4) Empty Board\n");
             scanf("%d", &difficultyChoice);
             switch(difficultyChoice){
                 case 1:
