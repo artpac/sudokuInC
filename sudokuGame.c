@@ -57,19 +57,67 @@ struct board easyBoard(){
 
     return easyBoardStruct;
 }
+struct board mediumBoard(){
 
+    struct board mediumBoardStruct = {{0,3,0,4,9,6,0,0,0}, 
+                                    {7,4,0,0,0,8,3,9,0}, 
+                                    {0,0,0,0,5,3,0,8,4}, 
+                                    {0,0,0,1,0,0,0,6,0}, 
+                                    {3,7,8,9,6,0,0,0,5}, 
+                                    {5,0,1,0,7,0,9,0,0}, 
+                                    {9,0,4,5,3,1,6,0,0}, 
+                                    {0,5,0,6,0,9,0,0,0}, 
+                                    {6,1,0,0,2,0,0,4,0},
 
+                                    {0,3,0,4,9,6,0,0,0}, 
+                                    {7,4,0,0,0,8,3,9,0}, 
+                                    {0,0,0,0,5,3,0,8,4}, 
+                                    {0,0,0,1,0,0,0,6,0}, 
+                                    {3,7,8,9,6,0,0,0,5}, 
+                                    {5,0,1,0,7,0,9,0,0}, 
+                                    {9,0,4,5,3,1,6,0,0}, 
+                                    {0,5,0,6,0,9,0,0,0}, 
+                                    {6,1,0,0,2,0,0,4,0},
+                                    };
+
+    return mediumBoardStruct;
+}
+struct board hardBoard(){
+
+    struct board hardBoardStruct = {{0,7,0,0,0,4,5,0,0}, 
+                                    {0,0,1,2,0,7,0,0,0}, 
+                                    {0,4,0,6,0,0,8,0,0}, 
+                                    {0,0,5,0,7,0,0,6,0}, 
+                                    {0,0,0,4,0,9,0,0,0}, 
+                                    {9,0,0,0,6,0,0,7,4}, 
+                                    {0,0,7,0,3,0,4,0,0}, 
+                                    {3,0,0,0,0,0,0,0,8}, 
+                                    {2,0,4,0,0,0,7,5,3},
+
+                                    {0,7,0,0,0,4,5,0,0}, 
+                                    {0,0,1,2,0,7,0,0,0}, 
+                                    {0,4,0,6,0,0,8,0,0}, 
+                                    {0,0,5,0,7,0,0,6,0}, 
+                                    {0,0,0,4,0,9,0,0,0}, 
+                                    {9,0,0,0,6,0,0,7,4}, 
+                                    {0,0,7,0,3,0,4,0,0}, 
+                                    {3,0,0,0,0,0,0,0,8}, 
+                                    {2,0,4,0,0,0,7,5,3}
+                                    };
+
+    return hardBoardStruct;
+}
 struct board emptyBoard(){
     struct board emptyBoard = {0};
 
     return emptyBoard;
 }
 
-
+//Declaring structs for the undo and redo function
 struct board undoStack[100];
 int undoTop = -1;
 struct board redoStack[100];
-int redoTop = 0;
+int redoTop = -1;
 int timeLimit;
 
 //Declaring menu function so it can be called before it is coded
@@ -88,7 +136,7 @@ struct board inputValue(struct board currentBoard){
     int y;
     int newValue;
     
-    
+    //Get user inputs
     printf("Enter y coordinate \n");
     scanf("%d", &y);
     writeToFile(y);
@@ -146,9 +194,8 @@ struct board inputValue(struct board currentBoard){
                 printf("Invalid y coordinate.\n");
                 break;
         }
-        printf("Invalid value. Please enter a value between 1 and 9.\n");
     } else {
-        
+        printf("Invalid value. Please enter a value between 1 and 9.\n");
     }
     pushUndoStack(currentBoard);
     displayBoard(currentBoard);
@@ -184,22 +231,18 @@ bool isPresetValue(struct board currentBoard, int x, int y) {
 
 void pushUndoStack(struct board currentBoard) {
     if (undoTop < 100 - 1) {
-        // Deep copy of the current board
-        // Implement your deep copy logic here
         undoStack[++undoTop] = currentBoard;
     } else {
         printf("Undo stack overflow\n");
     }
 }
-
-// Function to undo the last move
 void undo(struct board *currentBoard) {
     printf("Undo \n");
 
     if (undoTop >= 0) {
-        // Pop the board from the undo stack and update current board
+        //undo the top of the undo stack and change the board
         *currentBoard = undoStack[undoTop--];
-        // Push the current board onto the redo stack
+        //change redo stack to be of the current board
         redoStack[++redoTop] = *currentBoard;
     } else {
         printf("Undo stack is empty\n");
@@ -208,15 +251,13 @@ void undo(struct board *currentBoard) {
     // Display the updated board
     displayBoard(*currentBoard);
 }
-
-// Function to redo the last undone move
 void redo(struct board *currentBoard) {
     printf("Redo \n");
 
     if (redoTop >= 0) {
-        // Pop the board from the redo stack and update current board
+        //Pop value off of the redo stack 
         *currentBoard = redoStack[redoTop--];
-        // Push the current board onto the undo stack
+        //add the move to the undo stack
         pushUndoStack(*currentBoard);
     } else {
         printf("Redo stack is empty\n");
@@ -224,45 +265,6 @@ void redo(struct board *currentBoard) {
 
     // Display the updated board
     displayBoard(*currentBoard);
-}
-
-void old(){
-// void pushUndoStack(struct board currentBoard) {
-//     if (undoTop < 100 - 1) {
-//         undoStack[++undoTop] = currentBoard;
-//     } else {
-//         printf("Undo stack overflow\n");
-//     }
-// }
-// struct board popUndoStack(){
-    
-    
-//     printf("%d", undoTop);
-//     if(undoTop >= 0){
-//         printf("Undone successful\n");
-//         printf("%d", undoTop);
-//         return undoStack[(undoTop)--];
-//     } else{
-//         printf("No moves undone\n");
-//         return currentBoard;
-//     }
-// }
-// void undo(struct board *currentBoard){
-//     printf("Undo \n");
-
-//     if (undoTop >= 0) {
-//         *currentBoard = undoStack[undoTop--];
-//     } else {
-//         printf("Undo stack is empty\n");
-//     }
-
-//     displayBoard(*currentBoard);
-// }
-// int redo(){
-//     printf("Redo \n");
-
-//     return 0;
-// }
 }
 
 
@@ -284,7 +286,7 @@ struct board delete(struct board currentBoard){
     if (isPresetValue(currentBoard, x, y)) {
         printf("Cannot overwrite preset value.\n");
         displayBoard(currentBoard);
-        return currentBoard; // Return the unchanged board
+        return currentBoard;
     }
 
         // Update the board
@@ -329,7 +331,6 @@ int quit(){
     exit(0);
 
 }
-
 
 bool isSolved(struct board currentBoard) {
 
@@ -399,9 +400,10 @@ bool isSolved(struct board currentBoard) {
     return true;
 }
 
-
 void writeToFile(input){
+    //Create file pointer
     FILE *file;
+    //Opens the savegame file and appends new value to the file
     file = fopen("savegame.txt", "a");
     fprintf(file, "%d", input);
     fclose(file);
@@ -453,118 +455,11 @@ void displayBoard(struct board displayCurrentBoard) {
     printf("   -----------------------------\n");
 }
 
-
-void comments(){
-// void displayBoard(struct board displayCurrentBoard){
-//     printf("\n------------------------------------\n|");
-//     for(int i = 0; i < 9; i++){
-//         if(displayCurrentBoard.y1[i] == 0){
-//             printf("  | ");
-//         }
-//         if(displayCurrentBoard.y1[i] != 0){
-//             printf("%d | ", displayCurrentBoard.y1[i]);
-//         }
-
-//     }
-//     printf("\n------------------------------------\n|");
-
-//     for(int i = 0; i < 9; i++){
-//         if(displayCurrentBoard.y2[i] == 0){
-//             printf("  | ");
-//         }
-//         if(displayCurrentBoard.y2[i] != 0){
-//             printf("%d | ", displayCurrentBoard.y2[i]);
-//         }
-        
-//     }
-//     printf("\n------------------------------------\n|");
-
-//     for(int i = 0; i < 9; i++){
-//         if(displayCurrentBoard.y3[i] == 0){
-//             printf("  | ");
-//         }
-//         if(displayCurrentBoard.y3[i] != 0){
-//             printf("%d | ", displayCurrentBoard.y3[i]);
-//         }
-
-//     }
-//     printf("\n------------------------------------\n|");
-
-//     for(int i = 0; i < 9; i++){
-//         if(displayCurrentBoard.y4[i] == 0){
-//             printf("  | ");
-//         }
-//         if(displayCurrentBoard.y4[i] != 0){
-//             printf("%d | ", displayCurrentBoard.y4[i]);
-//         }
-
-//     }
-//     printf("\n------------------------------------\n|");
-
-//     for(int i = 0; i < 9; i++){
-//         if(displayCurrentBoard.y5[i] == 0){
-//             printf("  | ");
-//         }
-//         if(displayCurrentBoard.y5[i] != 0){
-//             printf("%d | ", displayCurrentBoard.y5[i]);
-//         }
-
-//     }
-//     printf("\n------------------------------------\n|");
-
-//     for(int i = 0; i < 9; i++){
-//         if(displayCurrentBoard.y6[i] == 0){
-//             printf("  | ");
-//         }
-//         if(displayCurrentBoard.y6[i] != 0){
-//             printf("%d | ", displayCurrentBoard.y6[i]);
-//         }
-
-//     }
-//     printf("\n------------------------------------\n|");
-
-//     for(int i = 0; i < 9; i++){
-//         if(displayCurrentBoard.y7[i] == 0){
-//             printf("  | ");
-//         }
-//         if(displayCurrentBoard.y7[i] != 0){
-//             printf("%d | ", displayCurrentBoard.y7[i]);
-//         }
-
-//     }
-//     printf("\n------------------------------------\n|");
-
-//     for(int i = 0; i < 9; i++){
-//         if(displayCurrentBoard.y8[i] == 0){
-//             printf("  | ");
-//         }
-//         if(displayCurrentBoard.y8[i] != 0){
-//             printf("%d | ", displayCurrentBoard.y8[i]);
-//         }
-
-//     }
-//     printf("\n------------------------------------\n|");
-
-//     for(int i = 0; i < 9; i++){
-//         if(displayCurrentBoard.y9[i] == 0){
-//             printf("  | ");
-//         }
-//         if(displayCurrentBoard.y9[i] != 0){
-//             printf("%d | ", displayCurrentBoard.y9[i]);
-//         }
-
-//     }
-//     printf("\n------------------------------------\n");
-
-// }
-}
-
-
-//Creating menu function
 void menu(struct board currentBoard){
-
+    //Start time for time limit
     time_t startTime = time(NULL);
     
+    //Get user choice and check input
     int choice;
     printf("\n1) Input Value\n2) Undo\n3) Redo\n4) Delete\n5) Display Board\n6) Solved?\n7) Quit ");
     scanf("%d", &choice);
@@ -575,7 +470,7 @@ void menu(struct board currentBoard){
         printf("Invalid: Enter another value ");
         scanf("%d", &choice);   
     }
-    
+    //Switch case to call the correct function
     switch (choice) {
         case 1:
             currentBoard = inputValue(currentBoard);
@@ -630,47 +525,55 @@ void menu(struct board currentBoard){
             printf("Invalid choice.\n");
             menu(currentBoard); // Restart the menu
     }
-    while (true) {
-              // Check if time limit is reached
-                if (isTimeUp(startTime)) {
-                    printf("Time's up! Game over.\n");
-                break;
-                }
-            }
+    // while (true) {
+    //           // Check if time limit is reached
+    //             if (isTimeUp(startTime)) {
+    //                 printf("Time's up! Game over.\n");
+    //             break;
+    //             }
+    // }
 }
 
 void startTimer() {
-    printf("Timer started. You have %d minutes.\n", timeLimit);
+    printf("Timer started. You have %d seconds.\n", timeLimit);
 }
 
-// Function to check if time limit is reached
+// checking to see if the time limit is up
 bool isTimeUp(time_t startTime) {
-    time_t currentTime = time(NULL); // Get the current time
+    // Get the current time
+    time_t currentTime = time(NULL);
     return (currentTime - startTime >= timeLimit);
 }
 
-// Function to initialize the timer and start the game
+//initialize the timer and start the game
 void initializeGame() {
-    printf("Enter the time limit : ");
+    printf("Enter the time limit (in seconds): ");
     scanf("%d", &timeLimit);
     startTimer(); // Start the timer
 }
 
 int main(){
+    //Initializing values
     int startChoice;
     int timeChoice;
     
     int difficultyChoice;
     struct board selectedBoard;
 
-
+    //Start of the game
     printf("\n\nWelcome to my sudoku game\n\n");
 
     printf("Select an option - \n1) Start new game \n2) View pervious game \n3) Quit\n");
     scanf("%d", &startChoice);
-
+    char readValue;
+    //Switch case for user choice
     switch(startChoice){
+        //Created file pointer and started a new savegame.txt file
+        FILE *file;
         case 1:
+            file = fopen("savegame.txt", "w");
+
+            //Gets user board difficulty
             printf("Pick a difficulty - \n1) Easy \n2) Meduim \n3) Hard \n4) Empty Board\n");
             scanf("%d", &difficultyChoice);
             switch(difficultyChoice){
@@ -678,23 +581,23 @@ int main(){
                     selectedBoard = easyBoard();
                 break;
                 case 2:
-                    selectedBoard = easyBoard();
+                    selectedBoard = mediumBoard();
                 break;
                 case 3:
-                    selectedBoard = easyBoard();
+                    selectedBoard = hardBoard();
                 break;
                 case 4:
                     selectedBoard = emptyBoard();
                 break;
             }
-
+            writeToFile(difficultyChoice);
             printf("Would you like to set a time limit?\n1) Yes\n2) No");
             scanf("%d", &timeChoice);
             if(timeChoice == 1){
             initializeGame();
               
             }
-            
+            writeToFile(timeChoice);
             
             displayBoard(selectedBoard);
             menu(selectedBoard);
@@ -702,40 +605,27 @@ int main(){
             
         break;
 
+        case 2:
+            
+            //Reads in file and prints the previous game
+            //Ran out of time to code the load game
+            file = fopen("savegame.txt", "r");
+            readValue = fgetc(file);
+
+            if (file == NULL) {
+                printf("Error opening file.\n");
+            }
+            printf("The user input was recorded from when the new game mode was selected.\n");
+            printf("The moves from the previous game were: ");
+            while (readValue != EOF) {
+                printf("%c", readValue);
+                readValue = fgetc(file);
+            }
+            printf("\n");
+            break;
+
         case 3:
             quit();
         break;
-        
-
     }
-    
-
-    
-    
-
 }
-
-// int main(){
-//     //Created file pointer and started a new savegame.txt file
-//     FILE *file;
-//     file = fopen("savegame.txt", "w");
-//     //Created board struct to chose level;
-//     struct board selectedBoard;
-//     struct board solvedboard;
-//     // currentBoard = selectedBoard;
-//     struct board undoStack[100];
-//     struct board redoStack[100];
-//     printf("hello\n");
-
-//     // solvedboard = easyBoardSolved();
-//     // displayBoard(solvedboard);
-//     // menu(solvedboard);
-
-//     selectedBoard = easyBoard();
-//     pushUndoStack(selectedBoard);
-//     // selectedBoard = emptyBoard();
-//     displayBoard(selectedBoard);
-//     menu(selectedBoard);
-
-    
-// }
